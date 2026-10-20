@@ -166,4 +166,10 @@ public class DwMtm extends Frame{
                 
         
     }
+    
+    private void filtrarBanda(Raster entrada, WritableRaster saida, int banda){
+    
+        int[][] mediana = calcularMediana(entrada, banda);
+        calcularMediaAparda(entrada, saida, banda, mediana);
+    }
 }
