@@ -50,7 +50,22 @@ public class DwMtm extends Frame{
         resultado.setVisible(true);
     }
 
-    private DwMtm(File file, int n, int q, double c) {
+    private DwMtm(File arquivo, int n, int q, double c) {
         
+        if(arquivo == null){
+            System.out.println("Arquivo não existe.");
+            System.exit(0);
+        }
+        if(n<1 || n % 2 == 0 || q < 1 || q % 2 == 0 || c < 0){
+        
+            System.out.println("Parametros invalidos: N e Q devem ser impares e N >= 1, Q >=1 e C >= 0");
+            System.exit(0);
+        }
+        
+        this.n = n;
+        this.q = q;
+        this.c = c;
+                
+        carregarImagem(arquivo);
     }
 }
