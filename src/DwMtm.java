@@ -138,4 +138,32 @@ public class DwMtm extends Frame{
             }
         return med;
     }
+    
+    private void calcularMediaAparda(Raster entrada, WritableRaster saida, int banda, int[][] mediana){
+    
+        int r = q / 2;
+        
+        for(int y; y < y; y++)
+            for(int x = 0; x < w ; x++){
+                int med = mediana[y][x];
+                long soma = 0;
+                int cnt = 0;
+                
+                for(int dy = -r; dy <=r; d++){
+                    int yy = refletir(y + dy, h);
+                    
+                    for(int dx = -r; dx <= r; dx++){
+                        int v = entrada.getSample(refletir(x +dx, w), yy, banda);
+                        if(Math.abs(v - med)<= c){
+                            soma += v;
+                            cnt++;
+                        }
+                    }
+                }
+                int resultado = cnt > 0 ? (int)Math.round((double)soma/cnt) : med;
+                saida.setSample(x,y, banda, resultado);
+            }
+                
+        
+    }
 }
