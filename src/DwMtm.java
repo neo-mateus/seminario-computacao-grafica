@@ -178,4 +178,13 @@ public class DwMtm extends Frame{
                                 imgOriginal.isAlphaPremultiplied(), null);
     
     }
+    
+    public void aplicarDwMtm(){
+        procRaster = origRaster.createCompatibleWritableRaster();
+        
+            for(int banda = 0; banda < origRaster.getNumBands(); banda++)
+                filtrarBanda(origRaster, procRaster, banda);
+            imgPro = montarImagem(procRaster);
+    
+    }
 }
