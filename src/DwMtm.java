@@ -172,4 +172,10 @@ public class DwMtm extends Frame{
         int[][] mediana = calcularMediana(entrada, banda);
         calcularMediaAparda(entrada, saida, banda, mediana);
     }
+    
+    private BufferedImage montarImagem(WritableRaster raster){
+        return new BufferedImage(imgOriginal.getColorModel(), raster,
+                                imgOriginal.isAlphaPremultiplied(), null);
+    
+    }
 }
