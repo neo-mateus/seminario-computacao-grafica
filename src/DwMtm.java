@@ -9,6 +9,7 @@ import java.awt.image.PixelGrabber;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
+import java.util.Arrays;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -103,6 +104,7 @@ public class DwMtm extends Frame{
         origRaster = imgOriginal.getRaster();
     }
     
+    //método de reflexão das bordas
     private static int refletir(int i, int tamanho){
         if (tamanho == 1)
             return 0;
@@ -113,5 +115,27 @@ public class DwMtm extends Frame{
         else
             return periodo - i;
         
+    }
+    
+    //Método da mediana do raster
+    private int[][] calcularMediana(Raster raster, int banda){
+    
+        int r = n / 2;
+        int[][] med = new int[h][w];
+        int[] buf = new int[n*n];
+        
+        for(int y = 0; y < h; y++)
+            for(int x = 0; x < w; x++){
+            int k = 0;
+                for( int dy = -r; dy <= r; dy++){
+                    int yy = refletir(y + dy, h);
+                    for (int dx = -r; dx <= r; dx++)
+                        buf[k++] = raster.getSample(refletir(x + dx, w), yy, banda);
+                }
+               Arrays.sort(buf);
+               med[y][x] = buf[buf.length/2];
+            
+            }
+        return med;
     }
 }
