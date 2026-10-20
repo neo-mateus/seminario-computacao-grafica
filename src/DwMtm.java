@@ -40,12 +40,12 @@ public class DwMtm extends Frame{
     private WritableRaster procRaster;
     
     public static void main(String[] args) {
-        String nomeImg = "seminario.png";
-        int n;
-        int q;
-        double c;
+        String nomeImg = "seminario.jpeg";
+        int n = 13;
+        int q = 15;
+        double c = 70;
         
-        DwMtm resultado = new DwMtm(new File(nomeImg, n, q, c));
+        DwMtm resultado = new DwMtm(new File(nomeImg), n, q, c);
         
         resultado.aplicarDwMtm();
         
@@ -149,13 +149,13 @@ public class DwMtm extends Frame{
     
         int r = q / 2;
         
-        for(int y; y < y; y++)
+        for(int y = 0; y < h; y++)
             for(int x = 0; x < w ; x++){
                 int med = mediana[y][x];
                 long soma = 0;
                 int cnt = 0;
                 
-                for(int dy = -r; dy <=r; d++){
+                for(int dy = -r; dy <=r; dy++){
                     int yy = refletir(y + dy, h);
                     
                     for(int dx = -r; dx <= r; dx++){
@@ -196,7 +196,7 @@ public class DwMtm extends Frame{
     
     public double calcularPsnr(){
     
-        int bandas = rasterOriginal.getNumBands();
+        int bandas = origRaster.getNumBands();
         double mse = 0;
         for (int b = 0; b < bandas; b++)
             for (int y = 0; y < h; y++)
