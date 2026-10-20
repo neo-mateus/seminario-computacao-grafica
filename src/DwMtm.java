@@ -1,8 +1,14 @@
 
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Event;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.MediaTracker;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
@@ -200,5 +206,39 @@ public class DwMtm extends Frame{
                 }
         mse /= (double) bandas * w * h;
         return mse == 0 ? Double.POSITIVE_INFINITY : 10 * Math.log10(255.0 * 255.0 / mse);
+    }
+    
+    @Override
+        public boolean handleEvent(Event event){
+            if(event.id == Event.WINDOW_DESTROY)
+                System.exit(0);
+           return super.handleEvent(event);
+            
+        }
+        
+    private static class PainelImagem extends Canvas {
+        private final String titulo;
+        private final BufferedImage img;
+ 
+        PainelImagem(String titulo, BufferedImage img) {
+            this.titulo = titulo;
+            this.img = img;
+            setBackground(Color.DARK_GRAY);
+        }
+ 
+        @Override
+        public void paint(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2.setColor(Color.WHITE);
+            g2.drawString(titulo, 8, 16);
+ 
+            int pw = getWidth() - 16, ph = getHeight() - 30;
+            if (pw <= 0 || ph <= 0) return;
+            double escala = Math.min((double) pw / img.getWidth(), (double) ph / img.getHeight());
+            int dw = (int) (img.getWidth() * escala), dh = (int) (img.getHeight() * escala);
+            g2.drawImage(img, (getWidth() - dw) / 2, 24 + (ph - dh) / 2, dw, dh, null);
+        }
     }
 }
