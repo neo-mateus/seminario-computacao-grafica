@@ -1,9 +1,14 @@
 
 import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
+import java.io.File;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -52,7 +57,7 @@ public class DwMtm extends Frame{
 
     private DwMtm(File arquivo, int n, int q, double c) {
         
-        if(arquivo == null){
+        if(arquivo == null || !arquivo.exists()){
             System.out.println("Arquivo não existe.");
             System.exit(0);
         }
@@ -67,5 +72,34 @@ public class DwMtm extends Frame{
         this.c = c;
                 
         carregarImagem(arquivo);
+    }
+
+    //método de entrada
+    private void carregarImagem(File arquivo) {
+        int[] pixels = null;
+        
+        try{
+            Image img = Toolkit.getDefaultToolkit().getImage(arquivo.getPath());
+            MediaTracker mt = new MediaTracker(this);
+            mt.addImage(img, 0);
+            mt.waitForID(0);
+ 
+            w = img.getWidth(null);
+            h = img.getHeight(null);
+            if (w <= 0 || h <= 0) {
+                System.out.println("Erro lendo arquivo");
+                System.exit(0);
+            }
+            pixels = new int[w * h];
+            PixelGrabber pg = new PixelGrabber(img, 0, 0, w, h, pixels, 0, w);
+            pg.grabPixels();
+        }catch(InterruptedException ex){
+            System.out.println("Erro ao ler o arquivo");
+            System.exit(0);
+        }
+        
+        imgOriginal = new BufferedImage(w,h, BufferedImage.TYPE_INT_RGB);
+        imgOriginal.setRGB(0, 0, w, h, pixels, 0, w);
+        origRaster = imgOriginal.getRaster();
     }
 }
