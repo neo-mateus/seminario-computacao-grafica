@@ -157,4 +157,35 @@ public class LeeMmse extends JFrame {
             }
         return v;
     }
+     
+    private double estimarVarRuido(double[][] v) {
+ 
+        double[] todas = new double[h * w];
+        for (int y = 0; y < h; y++)
+            System.arraycopy(v[y], 0, todas, y * w, w);
+        Arrays.sort(todas);
+ 
+        int n = todas.length;
+        if (n % 2 == 1)
+            return todas[n / 2];
+        else
+            return 0.5 * (todas[n / 2 - 1] + todas[n / 2]);
+    }
+ 
+    //TODO 3: ganho k e saída y = m + k (x - m), gravada no WritableRaster
+    private void calcularLee(Raster entrada, WritableRaster saida, int banda,
+                             double[][] media, double[][] variancia, double vr) {
+ 
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++) {
+                double v = variancia[y][x];
+                double k = Math.max(v - vr, 0) / Math.max(v, 1e-9);
+                double m = media[y][x];
+                double xv = entrada.getSample(x, y, banda);
+ 
+                int resultado = (int) Math.round(m + k * (xv - m));
+                resultado = Math.min(255, Math.max(0, resultado));
+                saida.setSample(x, y, banda, resultado);
+            }
+    }
 }
