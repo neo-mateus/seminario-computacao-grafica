@@ -112,4 +112,15 @@ public class Mtm extends JFrame {
         imgOriginal.setRGB(0, 0, w, h, pixels, 0, w);
         origRaster = imgOriginal.getRaster();
     }
+   
+   private static int refletir(int i, int tamanho) {
+        if (tamanho == 1)
+            return 0;
+        int periodo = 2 * (tamanho - 1);
+        i = Math.floorMod(i, periodo);
+        if (i < tamanho)
+            return i;
+        else
+            return periodo - i;
+    }
 }
