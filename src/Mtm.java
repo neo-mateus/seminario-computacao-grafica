@@ -171,4 +171,23 @@ public class Mtm extends JFrame {
                 saida.setSample(x, y, banda, resultado);
             }
     }
+    
+    private void filtrarBanda(Raster entrada, WritableRaster saida, int banda) {
+ 
+        int[][] mediana = calcularMediana(entrada, banda);
+        calcularMediaAparada(entrada, saida, banda, mediana);
+    }
+ 
+    private BufferedImage montarImagem(WritableRaster raster) {
+        return new BufferedImage(imgOriginal.getColorModel(), raster,
+                imgOriginal.isAlphaPremultiplied(), null);
+    }
+ 
+    public void aplicarMtm() {
+        procRaster = origRaster.createCompatibleWritableRaster();
+ 
+        for (int banda = 0; banda < origRaster.getNumBands(); banda++)
+            filtrarBanda(origRaster, procRaster, banda);
+        imgPro = montarImagem(procRaster);
+    }
 }
