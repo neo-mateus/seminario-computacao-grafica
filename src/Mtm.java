@@ -1,3 +1,15 @@
+
+import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.io.File;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -44,3 +56,11 @@ public class Mtm extends JFrame {
         jf.setLocationRelativeTo(null);
         jf.setVisible(true);
     }
+ 
+ private static JScrollPane painel(String titulo, BufferedImage img) {
+        JLabel view = new JLabel(new ImageIcon(img));
+        JScrollPane sp = new JScrollPane(view);
+        sp.setBorder(BorderFactory.createTitledBorder(titulo));
+        return sp;
+    }
+}
