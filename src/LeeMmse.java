@@ -57,10 +57,27 @@ public class LeeMmse extends JFrame {
         jf.setVisible(true);
     }
 
- private static JScrollPane painel(String titulo, BufferedImage img) {
+    private static JScrollPane painel(String titulo, BufferedImage img) {
         JLabel view = new JLabel(new ImageIcon(img));
         JScrollPane sp = new JScrollPane(view);
         sp.setBorder(BorderFactory.createTitledBorder(titulo));
         return sp;
+    }
+ 
+     private LeeMmse(File arquivo, int tam, double varRuido) {
+ 
+        if (arquivo == null || !arquivo.exists()) {
+            System.out.println("Arquivo não existe.");
+            System.exit(0);
+        }
+        if (tam < 1 || tam % 2 == 0) {
+            System.out.println("Parametro invalido: a janela deve ser impar e >= 1");
+            System.exit(0);
+        }
+ 
+        this.tam = tam;
+        this.varRuido = varRuido;
+ 
+        carregarImagem(arquivo);
     }
 }
