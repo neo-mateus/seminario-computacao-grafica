@@ -8,6 +8,7 @@ import java.awt.image.PixelGrabber;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.File;
+import java.util.Arrays;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -142,5 +143,32 @@ public class Mtm extends JFrame {
                 med[y][x] = buf[buf.length / 2];
             }
         return med;
+    }
+   
+    private void calcularMediaAparada(Raster entrada, WritableRaster saida, int banda, int[][] mediana) {
+ 
+        int r = tam / 2;
+ 
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++) {
+                int med = mediana[y][x];
+                long soma = 0;
+                int cnt = 0;
+ 
+                for (int dy = -r; dy <= r; dy++) {
+                    int yy = refletir(y + dy, h);
+ 
+                    for (int dx = -r; dx <= r; dx++) {
+                        int v = entrada.getSample(refletir(x + dx, w), yy, banda);
+                        if (Math.abs(v - med) <= c) {
+                            soma += v;
+                            cnt++;
+                        }
+                    }
+                }
+                //cnt >= 1: a própria mediana pertence à janela (número ímpar de amostras)
+                int resultado = cnt > 0 ? (int) Math.round((double) soma / cnt) : med;
+                saida.setSample(x, y, banda, resultado);
+            }
     }
 }
