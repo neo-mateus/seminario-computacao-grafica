@@ -121,5 +121,21 @@ public class LeeMmse extends JFrame {
         else
             return periodo - i;
     }
-    
+     private double[][] calcularMedia(Raster raster, int banda) {
+ 
+        int r = tam / 2;
+        double[][] m = new double[h][w];
+ 
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++) {
+                double soma = 0;
+                for (int dy = -r; dy <= r; dy++) {
+                    int yy = refletir(y + dy, h);
+                    for (int dx = -r; dx <= r; dx++)
+                        soma += raster.getSample(refletir(x + dx, w), yy, banda);
+                }
+                m[y][x] = soma / (tam * tam);
+            }
+        return m;
+    }
 }
