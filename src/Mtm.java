@@ -123,4 +123,24 @@ public class Mtm extends JFrame {
         else
             return periodo - i;
     }
+   
+    private int[][] calcularMediana(Raster raster, int banda) {
+ 
+        int r = tam / 2;
+        int[][] med = new int[h][w];
+        int[] buf = new int[tam * tam];
+ 
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++) {
+                int k = 0;
+                for (int dy = -r; dy <= r; dy++) {
+                    int yy = refletir(y + dy, h);
+                    for (int dx = -r; dx <= r; dx++)
+                        buf[k++] = raster.getSample(refletir(x + dx, w), yy, banda);
+                }
+                Arrays.sort(buf);
+                med[y][x] = buf[buf.length / 2];
+            }
+        return med;
+    }
 }
