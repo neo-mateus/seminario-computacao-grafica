@@ -190,4 +190,18 @@ public class Mtm extends JFrame {
             filtrarBanda(origRaster, procRaster, banda);
         imgPro = montarImagem(procRaster);
     }
+    
+    public double calcularPsnr() {
+ 
+        int bandas = origRaster.getNumBands();
+        double mse = 0;
+        for (int b = 0; b < bandas; b++)
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++) {
+                    double d = origRaster.getSample(x, y, b) - procRaster.getSample(x, y, b);
+                    mse += d * d;
+                }
+        mse /= (double) bandas * w * h;
+        return mse == 0 ? Double.POSITIVE_INFINITY : 10 * Math.log10(255.0 * 255.0 / mse);
+    }
 }
