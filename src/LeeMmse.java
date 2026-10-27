@@ -188,4 +188,25 @@ public class LeeMmse extends JFrame {
                 saida.setSample(x, y, banda, resultado);
             }
     }
+
+private void filtrarBanda(Raster entrada, WritableRaster saida, int banda) {
+ 
+        double[][] media = calcularMedia(entrada, banda);
+        double[][] variancia = calcularVariancia(entrada, banda, media);
+        double vr = varRuido < 0 ? estimarVarRuido(variancia) : varRuido;
+        calcularLee(entrada, saida, banda, media, variancia, vr);
+    }
+ 
+    private BufferedImage montarImagem(WritableRaster raster) {
+        return new BufferedImage(imgOriginal.getColorModel(), raster,
+                imgOriginal.isAlphaPremultiplied(), null);
+    }
+ 
+    public void aplicarLee() {
+        procRaster = origRaster.createCompatibleWritableRaster();
+ 
+        for (int banda = 0; banda < origRaster.getNumBands(); banda++)
+            filtrarBanda(origRaster, procRaster, banda);
+        imgPro = montarImagem(procRaster);
+    }
 }
