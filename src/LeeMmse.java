@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import java.util.Arrays;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -26,8 +27,8 @@ import javax.swing.JScrollPane;
 public class LeeMmse extends JFrame {
  
     //parâmetros do filtro
-    private final int tam = 0;          //lado da janela
-    private final double varRuido = 0;  //variância do ruído (< 0 = estimar automaticamente)
+    private final int tam;          //lado da janela
+    private final double varRuido;  //variância do ruído (< 0 = estimar automaticamente)
  
     //imagens e rasters
     private int w, h;
