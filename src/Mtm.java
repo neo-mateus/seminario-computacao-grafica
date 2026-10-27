@@ -63,4 +63,21 @@ public class Mtm extends JFrame {
         sp.setBorder(BorderFactory.createTitledBorder(titulo));
         return sp;
     }
+ 
+     private Mtm(File arquivo, int tam, double c) {
+ 
+        if (arquivo == null || !arquivo.exists()) {
+            System.out.println("Arquivo não existe.");
+            System.exit(0);
+        }
+        if (tam < 1 || tam % 2 == 0 || c < 0) {
+            System.out.println("Parametros invalidos: a janela deve ser impar e >= 1, e C >= 0");
+            System.exit(0);
+        }
+ 
+        this.tam = tam;
+        this.c = c;
+ 
+        carregarImagem(arquivo);
+    }
 }
