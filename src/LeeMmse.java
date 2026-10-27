@@ -138,4 +138,23 @@ public class LeeMmse extends JFrame {
             }
         return m;
     }
+     private double[][] calcularVariancia(Raster raster, int banda, double[][] media) {
+ 
+        int r = tam / 2;
+        double[][] v = new double[h][w];
+ 
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++) {
+                double soma = 0;
+                for (int dy = -r; dy <= r; dy++) {
+                    int yy = refletir(y + dy, h);
+                    for (int dx = -r; dx <= r; dx++) {
+                        double d = raster.getSample(refletir(x + dx, w), yy, banda) - media[y][x];
+                        soma += d * d;
+                    }
+                }
+                v[y][x] = soma / (tam * tam);
+            }
+        return v;
+    }
 }
